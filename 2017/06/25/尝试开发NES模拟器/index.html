@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://rexq.me">
-  <title>尝试开发NES模拟器 | Hexo</title>
+  <title>尝试开发NES模拟器 | rexq</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="找了些NES资料，便开始着手NES模拟器的开发。 首先，看到6502处理器的描述之后，创建一个cpu.hpp文件，写出6502 cpu的寄存器结构体：  这样就确定了6502处理器的内部结构。接下来就是要模拟数值计算，一些寻址模式，无非就是直接寻址、间接寻址、或者再加上寄存器的值。 每条指令基本是这样，指令码是8bit，后面紧跟的操作数是8bit或16bit。我们要做的就是读取第一个字节，放到sw">
 <meta name="keywords" content="NES 汇编">
 <meta property="og:type" content="article">
 <meta property="og:title" content="尝试开发NES模拟器">
 <meta property="og:url" content="http://rexq.me/2017/06/25/尝试开发NES模拟器/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="rexq">
 <meta property="og:description" content="找了些NES资料，便开始着手NES模拟器的开发。 首先，看到6502处理器的描述之后，创建一个cpu.hpp文件，写出6502 cpu的寄存器结构体：  这样就确定了6502处理器的内部结构。接下来就是要模拟数值计算，一些寻址模式，无非就是直接寻址、间接寻址、或者再加上寄存器的值。 每条指令基本是这样，指令码是8bit，后面紧跟的操作数是8bit或16bit。我们要做的就是读取第一个字节，放到sw">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://rexq.me/images/nes_dev/1.jpg">
@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="找了些NES资料，便开始着手NES模拟器的开发。 首先，看到6502处理器的描述之后，创建一个cpu.hpp文件，写出6502 cpu的寄存器结构体：  这样就确定了6502处理器的内部结构。接下来就是要模拟数值计算，一些寻址模式，无非就是直接寻址、间接寻址、或者再加上寄存器的值。 每条指令基本是这样，指令码是8bit，后面紧跟的操作数是8bit或16bit。我们要做的就是读取第一个字节，放到sw">
 <meta name="twitter:image" content="http://rexq.me/images/nes_dev/1.jpg">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="rexq" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
