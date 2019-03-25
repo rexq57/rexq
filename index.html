@@ -152,251 +152,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-破解抖音反动态调试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/破解抖音反动态调试/">破解抖音反动态调试</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/破解抖音反动态调试/" class="archive-article-date">
-  	<time datetime="2018-05-13T14:09:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>连抖音这种app也开始加防逆向手段了，那么就来练练手吧<br>首先lldb里得到程序跳出的信息，得知是执行了exit(0)</p>
-<p><img src="/images/484DCD39C7E2D39F48E464E7E570778E.jpg" alt><br>那么肯定是执行了如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if (检测)</span><br><span class="line">	exit(0);</span><br></pre></td></tr></table></figure>
-<p>那么就需要找到代码段，直接在exit函数下断点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">br s -n exit</span><br></pre></td></tr></table></figure>
-<p>然后运行程序，lldb会停在exit函数上。将断点地址减去镜像内存基地址，得到偏移地址，我自己写了个指令叫poffset来得到偏移地址，否则得用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image list</span><br></pre></td></tr></table></figure>
-<p>查看程序镜像基地址。</p>
-<p><img src="/images/DD038112-7276-455B-9D17-90987D4E2111.jpg" alt></p>
-<p>用反汇编工具跳转到偏移地址查看伪代码如下</p>
-<p><img src="/images/FD6EA03F-BB46-4ADF-806E-C6C6BA896448.jpg" alt></p>
-<p>接着再往上断点来定位代码执行经过，结果定位到两处地方</p>
-<p><img src="/images/838C29E1-1DD8-464C-8E03-C0ADCE851BD9.jpg" alt><br><img src="/images/8E6F2C95-9190-487D-910B-51BFAA1B58F6.jpg" alt></p>
-<p>功能是判断寄存器w8的第3bit是否是1，是的话就跳转：</p>
-<p><img src="/images/F8CB46B72D47513AAF2ED99BD3172434.jpg" alt></p>
-<p>那么破解就只需要在这里执行寄存器修改即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sbr 0x1bfe938</span><br><span class="line">br com add</span><br><span class="line">e $w8 ^= 8</span><br><span class="line">cont</span><br><span class="line">DONE</span><br><span class="line"></span><br><span class="line">sbr 0x1abb248</span><br><span class="line">br com add</span><br><span class="line">e $w8 ^= 8</span><br><span class="line">cont</span><br><span class="line">DONE</span><br></pre></td></tr></table></figure>
-<p>sbr是我自己写的断点添加指令，等价于<code>br s -a 基地+偏移地址</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/破解抖音反动态调试/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-处理mach-o的offset篡改" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/03/处理mach-o的offset篡改/">处理mach-o的offset篡改</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/03/处理mach-o的offset篡改/" class="archive-article-date">
-  	<time datetime="2018-01-03T14:22:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>防止静态调试，有的app修改了mach-o信息，例如section.offset，Hopper Disassembler就是这么干的。</p>
-<p>为了熟悉mach-o的数据格式，于是写了一个程序来修复offset，代码如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mach-o/loader.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">"Hopper\ Disassembler\ v3.app/Contents/MacOS/Hopper\ Disassembler\ v3_"</span>;</span><br><span class="line">    </span><br><span class="line">    FILE* f = fopen(filename, <span class="string">"r+"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (f == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"无法打开文件!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"file: %d\n"</span>, f);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 读取mach_header</span></span><br><span class="line">    <span class="comment">// 先判断架构：通过文件头4字节判断</span></span><br><span class="line">    <span class="keyword">uint32_t</span> magic;</span><br><span class="line">    fseek(f, <span class="number">0</span>, SEEK_SET);</span><br><span class="line">    fread(&amp;magic, <span class="number">4</span>, <span class="number">1</span>, f);</span><br><span class="line">    <span class="keyword">if</span> (magic == MH_MAGIC_64)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"64位\n"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">mach_header_64</span> <span class="title">header</span>;</span></span><br><span class="line">        fseek(f, <span class="number">0</span>, SEEK_SET);</span><br><span class="line">        fread(&amp;header, <span class="keyword">sizeof</span>(struct mach_header_64), <span class="number">1</span>, f);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// segment</span></span><br><span class="line">        <span class="keyword">size_t</span> segment_start = <span class="keyword">sizeof</span>(struct mach_header_64);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"command数目: %d\n"</span>, header.ncmds);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">segment_command_64</span> <span class="title">last_command</span>;</span></span><br><span class="line">        <span class="keyword">size_t</span> command_start = segment_start;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;header.ncmds; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">segment_command_64</span> <span class="title">command</span>;</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 第一个command可以直接读</span></span><br><span class="line">                <span class="comment">// 其余的根据上一个command的长度来计算</span></span><br><span class="line">                <span class="keyword">if</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    command_start += last_command.cmdsize;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            fseek(f, command_start, SEEK_SET);</span><br><span class="line">            fread(&amp;command, <span class="keyword">sizeof</span>(struct segment_command_64), <span class="number">1</span>, f);</span><br><span class="line">            </span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"segment: %d [%x]\n"</span>, i, command_start);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 遍历command下面的section</span></span><br><span class="line">            <span class="keyword">if</span> (command.cmd == LC_SEGMENT_64)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="class"><span class="keyword">struct</span> <span class="title">section_64</span> <span class="title">last_section</span>;</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;command.nsects; i++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="class"><span class="keyword">struct</span> <span class="title">section_64</span> <span class="title">section</span>;</span></span><br><span class="line">                    <span class="keyword">size_t</span> section_start = command_start + <span class="keyword">sizeof</span>(struct segment_command_64);</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">if</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            section_start += i * <span class="keyword">sizeof</span>(struct section_64);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    fseek(f, section_start, SEEK_SET);</span><br><span class="line">                    fread(&amp;section, <span class="keyword">sizeof</span>(struct section_64), <span class="number">1</span>, f);</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 修复offset</span></span><br><span class="line">                    <span class="keyword">if</span> (<span class="number">1</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">size_t</span> fix_offset = section.addr - command.vmaddr + command.fileoff;</span><br><span class="line">                        </span><br><span class="line">                        <span class="keyword">if</span> (section.offset != fix_offset)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="built_in">printf</span>(<span class="string">"fix: %d -&gt; %d\n"</span>, section.offset, fix_offset);</span><br><span class="line">                            section.offset = fix_offset;</span><br><span class="line">                            <span class="comment">// 写回文件</span></span><br><span class="line">                            fseek(f, section_start, SEEK_SET);</span><br><span class="line">                            fwrite(&amp;section, <span class="keyword">sizeof</span>(struct section_64), <span class="number">1</span>, f);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    last_section = section;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            last_command = command;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"32位\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    fclose(f);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">file: -1816776656</span><br><span class="line">64位</span><br><span class="line">command数目: 35</span><br><span class="line">segment: 0 [20]</span><br><span class="line">segment: 1 [68]</span><br><span class="line">fix: 8341 -&gt; 28576</span><br><span class="line">fix: 3167048 -&gt; 3183242</span><br><span class="line">fix: 3170462 -&gt; 3185552</span><br><span class="line">fix: 3183026 -&gt; 3189248</span><br><span class="line">fix: 3309661 -&gt; 3315296</span><br><span class="line">fix: 3481849 -&gt; 3482788</span><br><span class="line">fix: 3523092 -&gt; 3523184</span><br><span class="line">fix: 3556044 -&gt; 3556064</span><br><span class="line">fix: 3558617 -&gt; 3558634</span><br><span class="line">fix: 3562627 -&gt; 3562636</span><br><span class="line">fix: 3591119 -&gt; 3591128</span><br><span class="line">fix: 3609366 -&gt; 3609368</span><br><span class="line">segment: 2 [470]</span><br><span class="line">fix: 4001791 -&gt; 4001792</span><br><span class="line">fix: 4001831 -&gt; 4001832</span><br><span class="line">fix: 4001847 -&gt; 4001848</span><br><span class="line">fix: 4002455 -&gt; 4002456</span><br><span class="line">fix: 4005535 -&gt; 4005536</span><br><span class="line">fix: 4005543 -&gt; 4005544</span><br><span class="line">fix: 4005551 -&gt; 4005552</span><br><span class="line">fix: 4034271 -&gt; 4034272</span><br><span class="line">fix: 4118207 -&gt; 4118208</span><br><span class="line">fix: 4119319 -&gt; 4119320</span><br><span class="line">fix: 4119327 -&gt; 4119328</span><br><span class="line">fix: 4119407 -&gt; 4119408</span><br><span class="line">fix: 4119815 -&gt; 4119816</span><br><span class="line">fix: 4119823 -&gt; 4119824</span><br><span class="line">fix: 4396743 -&gt; 4396744</span><br><span class="line">fix: 4424735 -&gt; 4424736</span><br><span class="line">fix: 4424791 -&gt; 4424792</span><br><span class="line">fix: 4426511 -&gt; 4426512</span><br><span class="line">fix: 4427207 -&gt; 4427208</span><br><span class="line">fix: 4435799 -&gt; 4435800</span><br><span class="line">fix: 4447000 -&gt; 4447008</span><br><span class="line">fix: 0 -&gt; 5534736</span><br><span class="line">fix: 0 -&gt; 5579096</span><br><span class="line">segment: 3 [be8]</span><br><span class="line">segment: 4 [c30]</span><br><span class="line">segment: 5 [c60]</span><br><span class="line">segment: 6 [c78]</span><br><span class="line">segment: 7 [cc8]</span><br><span class="line">segment: 8 [ce8]</span><br><span class="line">segment: 9 [d00]</span><br><span class="line">segment: 10 [d10]</span><br><span class="line">segment: 11 [dc8]</span><br><span class="line">segment: 12 [df8]</span><br><span class="line">segment: 13 [e30]</span><br><span class="line">segment: 14 [e88]</span><br><span class="line">segment: 15 [ec0]</span><br><span class="line">segment: 16 [f18]</span><br><span class="line">segment: 17 [f50]</span><br><span class="line">segment: 18 [f88]</span><br><span class="line">segment: 19 [fc0]</span><br><span class="line">segment: 20 [ff0]</span><br><span class="line">segment: 21 [1050]</span><br><span class="line">segment: 22 [10b0]</span><br><span class="line">segment: 23 [1108]</span><br><span class="line">segment: 24 [1168]</span><br><span class="line">segment: 25 [11c0]</span><br><span class="line">segment: 26 [1218]</span><br><span class="line">segment: 27 [1278]</span><br><span class="line">segment: 28 [12b0]</span><br><span class="line">segment: 29 [1308]</span><br><span class="line">segment: 30 [1378]</span><br><span class="line">segment: 31 [13e0]</span><br><span class="line">segment: 32 [1448]</span><br><span class="line">segment: 33 [1478]</span><br><span class="line">segment: 34 [1488]</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">逆向</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/03/处理mach-o的offset篡改/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Python-RGB-NV21编码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/31/Python-RGB-NV21编码/">Python RGB-&gt;NV21编码</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/31/Python-RGB-NV21编码/" class="archive-article-date">
-  	<time datetime="2017-12-31T14:34:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Python OpenCV的色彩编码模块居然没有RGB-&gt;NV21的编码，于是自己写了一个。其中的颜色矩阵是标准的，网上很多地方都是错的。包括OpenCV解出来的色彩都有偏差。</p>
-<p>（为了速度考虑，编码为NV21的时候没有做采样计算）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *    </span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line">video_cutoff = [<span class="number">0.0625</span>, <span class="number">0.5</span>, <span class="number">0.5</span>]</span><br><span class="line">full_cutoff = [<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">0.5</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rgb2yuv_cutoff</span><span class="params">(rgb_row, p)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [(a + p) <span class="keyword">for</span> a <span class="keyword">in</span> rgb_row]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rgb2yuv_convert</span><span class="params">(rgb, format, cutoff)</span>:</span></span><br><span class="line">    s = np.array([rgb2yuv_cutoff(np.array(np.dot(n/<span class="number">255.0</span>, format)), cutoff)</span><br><span class="line">                        <span class="keyword">for</span> n <span class="keyword">in</span> rgb]);</span><br><span class="line">    <span class="keyword">return</span> np.clip(s, <span class="number">0</span>, <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line">yuv2rgb_601 = np.matrix([[<span class="number">1.164</span>, <span class="number">1.164</span>, <span class="number">1.164</span>],</span><br><span class="line">                         [<span class="number">0.0</span>, <span class="number">-0.392</span>, <span class="number">2.017</span>],</span><br><span class="line">                               [<span class="number">1.596</span>, <span class="number">-0.813</span>,   <span class="number">0.0</span>]])</span><br><span class="line"></span><br><span class="line">yuv2rgb_709 = np.matrix([[<span class="number">1.164</span>, <span class="number">1.164</span>, <span class="number">1.164</span>],</span><br><span class="line">                               [<span class="number">0.0</span>, <span class="number">-0.213</span>, <span class="number">2.112</span>],</span><br><span class="line">                        [<span class="number">1.787</span>, <span class="number">-0.531</span>,   <span class="number">0.0</span>]])</span><br><span class="line"></span><br><span class="line">yuv2rgb_601f = np.matrix([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">0.0</span>, <span class="number">-0.343</span>, <span class="number">1.765</span>],</span><br><span class="line">                               [<span class="number">1.4</span>, <span class="number">-0.711</span>, <span class="number">0.0</span>]])</span><br><span class="line">rgb2yuv_601f = yuv2rgb_601f.I</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rgb2yuv</span><span class="params">(rgb)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (np.dot(rgb, rgb2yuv_601f) + full_cutoff).A1</span><br><span class="line"></span><br><span class="line"><span class="comment"># RGB Array编码为NV21字节序列，可直接写入文件</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rgbDataToNV21Bytes</span><span class="params">(rgbData)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> type(rgbData) <span class="keyword">is</span> <span class="keyword">not</span> np.ndarray:</span><br><span class="line">        <span class="keyword">raise</span> NameError(<span class="string">"bad type!"</span>) </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># width 和 height 必须 &gt;= 2</span></span><br><span class="line">    height = rgbData.shape[<span class="number">0</span>]</span><br><span class="line">    width = rgbData.shape[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> rgbData.shape[<span class="number">2</span>] != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">raise</span> NameError(<span class="string">"只支持RGB!"</span>) </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 写入缓冲区</span></span><br><span class="line">    bytes = np.zeros( int(width * height * <span class="number">1.5</span>) )</span><br><span class="line">    </span><br><span class="line">    yuvData = np.array(np.dot(rgbData.reshape( (width*height, <span class="number">3</span>) ) / <span class="number">255.0</span>, rgb2yuv_601f)+full_cutoff).reshape( (height, width, <span class="number">3</span>) ) * <span class="number">255</span></span><br><span class="line">    </span><br><span class="line">    offUV = width * height</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> range(height):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(width):</span><br><span class="line">            offY = y*width + x</span><br><span class="line">            </span><br><span class="line">            yuvb = yuvData[y][x]</span><br><span class="line">            bytes[offY] = yuvb[<span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> y % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">and</span> offY % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">                bytes[offUV] = yuvb[<span class="number">2</span>]</span><br><span class="line">                bytes[offUV+<span class="number">1</span>] = yuvb[<span class="number">1</span>]</span><br><span class="line">                offUV += <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    bytes = np.clip( bytes, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> bytes.astype(<span class="string">'uint8'</span>).tostring()</span><br><span class="line"></span><br><span class="line"><span class="comment"># nv21 YVU 速度很慢</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nv21BytesToRGBdata</span><span class="params">(img_str, width, height)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> type(img_str) <span class="keyword">is</span> <span class="keyword">not</span> str:</span><br><span class="line">        <span class="keyword">raise</span> NameError(<span class="string">"bad type!"</span>) </span><br><span class="line">    src = np.fromstring(img_str, np.uint8)</span><br><span class="line">    </span><br><span class="line">    numOfPixel = width * height</span><br><span class="line">    positionOfV = numOfPixel</span><br><span class="line">    yuvData = np.zeros( (height, width, <span class="number">3</span>) ) </span><br><span class="line">    </span><br><span class="line">    bytes = np.array([src[<span class="number">0</span>], src[positionOfV+<span class="number">1</span>], src[positionOfV]])</span><br><span class="line">    yuv = bytes / <span class="number">255.0</span> - [<span class="number">0</span>, <span class="number">0.5</span>, <span class="number">0.5</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(height):</span><br><span class="line">        startY = i*width</span><br><span class="line">        step = i/<span class="number">2</span>*width  </span><br><span class="line">        startV = positionOfV + step</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(width):</span><br><span class="line">            Y = startY + j</span><br><span class="line">            V = startV + j/<span class="number">2</span> * <span class="number">2</span></span><br><span class="line">            U = V + <span class="number">1</span></span><br><span class="line">            index = Y*<span class="number">3</span></span><br><span class="line">            bytes = np.array( [src[Y], src[U], src[V]] )</span><br><span class="line">            yuv = bytes / <span class="number">255.0</span> - full_cutoff</span><br><span class="line">            yuvData[i][j] = (np.dot( yuv, yuv2rgb_601f)) * <span class="number">255</span></span><br><span class="line">               </span><br><span class="line">    yuvData = np.clip( yuvData, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">                </span><br><span class="line">    <span class="keyword">return</span> yuvData.astype(<span class="string">'uint8'</span>)</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/31/Python-RGB-NV21编码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-在tweak里使用第三方库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -996,6 +751,237 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/06/06/IOS开发者武器库/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-破解非对等加密" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/19/破解非对等加密/">破解CCCrypt加密</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/19/破解非对等加密/" class="archive-article-date">
+  	<time datetime="2017-05-19T15:14:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>非对等加密文件，不能用暴力破解来完成，但是在移动平台上，破解它没有任何难度。</p>
+<p><img src="/images/7783310D-A874-4226-A26A-C61C250FE185.png" alt="7783310D-A874-4226-A26A-C61C250FE185"></p>
+<p>这是我在网上找到的代码，然后我发现很多APP都使用的这个代码，直接搜这个方法名称就能看到。他们都喜欢使用苹果提供的CCCrypt加密方法，毕竟是SDK提供的API，简单又方便，主要是方便了别人逆向。</p>
+<h4 id="破解方法"><a href="#破解方法" class="headerlink" title="破解方法"></a>破解方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">br s -n CCCrypt</span><br><span class="line">br com add</span><br><span class="line">bt</span><br><span class="line">DONE</span><br></pre></td></tr></table></figure>
+<p>简直不能再简单，在需要的地方断这个函数即可，打印出调用栈。然后一般会看到调用栈里就有开发人员封装好的解密API。</p>
+<p>其实在搞加密方面的东西，越普遍的东西越不能用。连破解方法都满天飞的东西，还指望它有什么安全性？</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/19/破解非对等加密/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-寻找合适版本的APP进行逆向" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/14/寻找合适版本的APP进行逆向/">寻找合适版本的APP进行逆向</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/14/寻找合适版本的APP进行逆向/" class="archive-article-date">
+  	<time datetime="2017-05-13T21:08:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一般我搞一个APP都会下载几个不同时期的产品，因为时间越靠后，防逆向功能可能越多，逆向难度越大。又要考虑其技术的更新换代，所以也不能太靠前。</p>
+<h4 id="下载APP任意版本的插件"><a href="#下载APP任意版本的插件" class="headerlink" title="下载APP任意版本的插件"></a>下载APP任意版本的插件</h4><p>App Admin是一款能够下载APP任意版本的插件，装好之后，在App Store里点击安装即可弹出选项。有了它，还可以进行多版本的代码比对，你会发现有的版本能直接看到函数参数，而有的并不显示。这比单独逆向一个版本的APP更容易。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/14/寻找合适版本的APP进行逆向/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-呵呵" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/12/呵呵/">呵呵</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/12/呵呵/" class="archive-article-date">
+  	<time datetime="2017-05-12T15:47:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>不出我所料，今天在iosre上面发了个帖，那个版主喜欢装逼，又回答不上来，恼羞成怒把我ban了。</p>
+<p>他还是个在读研究生，工作都没有，啃老，自以为了不起。经常看他以提问不规范嘲讽别人，结果他还厚颜无耻发帖乞讨门票钱，呵呵。装得牛上了天，结果1000多块钱都拿不出来，真是个弱鸡。这种人也是存在感匮乏，只能靠芝麻特权找优越感。</p>
+<p>正如我嘲笑他，只是多看了几页书而已，其实啥都不会，只会装逼。没任何实战经验，天天守着论坛靠怼别人装大神打发时间。同时还发现，那几个版主都差不多，弄个论坛只为装逼，弄个QQ群也随意踢人，这些弱鸡混不了多久，论坛一关就销声匿迹。</p>
+<p>我一开始说的果然没错，iosre这个论坛对新人不友好，其实对任何人都不友好，有问题还是去看雪论坛吧。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">闲谈</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/12/呵呵/">展开全文 >></a>
         </p>
       
 
