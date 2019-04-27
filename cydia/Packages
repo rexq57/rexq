@@ -1,0 +1,17 @@
+Package: com.yourcompany.rechat
+Version: 0.0.1-32+debug
+Architecture: iphoneos-arm
+Maintainer: Rexq57
+Installed-Size: 204
+Depends: mobilesubstrate
+Filename: ./com.yourcompany.rechat_0.0.1-32+debug_iphoneos-arm.deb
+Size: 7818
+MD5sum: 855a4bc72699bb5d6954fa55c98750ef
+SHA1: 160ed8dcd392d7713efce97714cc2f65ae9dbd31
+SHA256: 1c312f78aba78c87da5cc8d1a6ed41857ad2008e499b7d1e8fb63b89acf27066
+Section: 系统工具
+Homepage: http://rexq.me
+Description: 给微信添加指纹解锁功能的插件
+Author: Rexq57
+Name: ReChat
+
