@@ -152,160 +152,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-在tweak里使用第三方库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/26/在tweak里使用第三方库/">在tweak里使用第三方库</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/26/在tweak里使用第三方库/" class="archive-article-date">
-  	<time datetime="2017-10-25T17:59:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在编写tweak插件的时候，使用第三方库或者自己写的库是必不可少的，通常没有正确设置的情况下，在xm文件里写了#import &lt;XXX/XXX.h&gt;，会报错：’XXX/XXX.h’ file not found</p>
-<p>（或者静态库编译设置不对，会报错：missing submodule ‘XXX.XXX’）</p>
-<p>正确的做法是在Makefile文件里加入以下两句代码来指定根目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hackXXX_LDFLAGS += -F/Users/yourname/hackXXX</span><br><span class="line">hackXXX_CFLAGS += -F/Users/yourname/hackXXX</span><br></pre></td></tr></table></figure>
-<p>也可以直接将库扔到这里：</p>
-<p><code>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tweak</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/26/在tweak里使用第三方库/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-更新Mac电脑的Windows显卡驱动" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/更新Mac电脑的Windows显卡驱动/">更新Mac电脑的Windows显卡驱动</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/25/更新Mac电脑的Windows显卡驱动/" class="archive-article-date">
-  	<time datetime="2017-08-24T17:51:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在iMac5K上装了Win10之后，发现不支持Vulkan，显卡驱动是15年的，于是从官网下载最新驱动，发现并不能安装。提示无法检测到支持的显卡，估计需要修改驱动程序包，但这已经有人帮忙做了，网站在这里：<a href="https://www.mxdriver.com/" target="_blank" rel="noopener">https://www.mxdriver.com/</a></p>
-<p>在上面找到对应GPU支持的驱动包安装即可。注意，凡是安装修改过的驱动，都需要禁用驱动签名。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/25/更新Mac电脑的Windows显卡驱动/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-NES模拟器开发资料" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -540,400 +386,6 @@
 
 
   
-    <article id="post-OSX命令缺失怎么办？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/24/OSX命令缺失怎么办？/">OSX命令缺失怎么办？</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/24/OSX命令缺失怎么办？/" class="archive-article-date">
-  	<time datetime="2017-06-24T11:36:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在折腾系统安装软件的过程中，难免遇到命令缺失。例如pip命令丢失，这个在折腾python环境的时候最容易出现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-bash: pip: command not found</span><br></pre></td></tr></table></figure></p>
-<p>由于pip是python的第三方包，调用命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/python /Library/Python/2.7/site-packages/pip</span><br></pre></td></tr></table></figure>
-<p>所以只需要在~/.bash_profile里添加一条自定义命令就不怕搞丢了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias pip=&quot;/usr/bin/python /Library/Python/2.7/site-packages/pip&quot;</span><br></pre></td></tr></table></figure>
-<p>如果对象是一个可执行文件，只需重做这个软链接到/usr/local/bin目录下即可。</p>
-<p>直接复制替身进去是不行的，这么干你会得到这个错误，例如我尝试执行iproxy的替身：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-bash: /usr/local/bin/iproxy: Permission denied</span><br></pre></td></tr></table></figure></p>
-<p>哪怕使用chmod +x iproxy 进行处理，仍然会得到错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-bash: /usr/local/bin/iproxy: cannot execute binary file</span><br></pre></td></tr></table></figure></p>
-<p>必须通过sudo ln -s创建软链接到/usr/local/bin才行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/Cellar/usbmuxd/1.0.10_1/bin/iproxy /usr/local/bin</span><br></pre></td></tr></table></figure>
-<p>所以，要么自己创建自定义命令，调用可执行文件原身，要么创建软链接到/usr/local/bin。</p>
-<p>这里再提一句，/usr/bin 和 /usr/local/bin 目录分别是调用系统和用户创建的可执行文件的地方，输入一个命令，OSX就会从这里面查找可执行文件和软链接。</p>
-<p>输入 echo $PATH ，你会看到这个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</span><br></pre></td></tr></table></figure></p>
-<p>这个跟windows上的环境变量一样，$PATH就是系统查找命令执行目标的地方。OSX会先搜索/usr/bin，再搜索/usr/local/bin，如果/usr/bin里的软链接挂掉了，指向一个不存在的可执行文件，那么就需要对其进行修正，重做软链接。而python作为系统自带的程序，弄坏了，就必须去操作/usr/bin/python，而不光是创建一个自定义命令那么简单，因为系统其他组件仍然会调用到/usr/bin/python，造成错误。所以，那些说不要去修改/usr/bin目录的说法并不正确，有时候必须这么干。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">OSX</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/24/OSX命令缺失怎么办？/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-让Tweak支持C-11" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/15/让Tweak支持C-11/">让Tweak支持C++11</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/15/让Tweak支持C-11/" class="archive-article-date">
-  	<time datetime="2017-06-14T16:06:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>废话不多说，直接上代码，Makefile内容如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">THEOS_DEVICE_IP = localhost</span><br><span class="line">THEOS_DEVICE_PORT = <span class="number">2222</span></span><br><span class="line"></span><br><span class="line">include $(THEOS)/makefiles/common.mk</span><br><span class="line"></span><br><span class="line">TWEAK_NAME = hackXXX</span><br><span class="line">hackXXX_FILES = Tweak.xm</span><br><span class="line">hackXXX_CFLAGS=-std=c++<span class="number">11</span></span><br><span class="line">hackXXX_CFLAGS+=-I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1</span><br><span class="line"></span><br><span class="line">hackXXX_LDFLAGS = -lc++</span><br><span class="line"></span><br><span class="line">include $(THEOS_MAKE_PATH)/tweak.mk</span><br><span class="line"></span><br><span class="line">after-install::</span><br><span class="line">	install.<span class="keyword">exec</span> <span class="string">"killall -9 XXX”</span></span><br></pre></td></tr></table></figure>
-<p>主要是添加 CFLAGS 和 LDFLAGS 即可。然后，就可以在代码里使用C++11的特性了。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;substrate.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; test;</span><br><span class="line"></span><br><span class="line">%ctor</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">123</span>;</span><br><span class="line">    <span class="keyword">auto</span> a = b;</span><br><span class="line">    NSLog(@<span class="string">"fuck %d"</span>, a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/15/让Tweak支持C-11/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-IOS开发者武器库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/06/IOS开发者武器库/">IOS开发者武器库</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/06/IOS开发者武器库/" class="archive-article-date">
-  	<time datetime="2017-06-06T13:32:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/awesome_logo.png" alt="awesome_logo"></p>
-<h1 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h1><p>该项目收集了很多精心设计的iOS框架，库，教程，Xcode插件，组件等等。这些第三方开源代码能帮助开发者快速实现应用功能，避免重复造轮子。配合CocoaPods来管理项目依赖，太方便了。</p>
-<h2 id="项目在此"><a href="#项目在此" class="headerlink" title="项目在此"></a>项目在此</h2><p><a href="https://github.com/vsouza/awesome-ios" target="_blank" rel="noopener">https://github.com/vsouza/awesome-ios</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">IOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/06/IOS开发者武器库/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-破解非对等加密" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/19/破解非对等加密/">破解CCCrypt加密</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/19/破解非对等加密/" class="archive-article-date">
-  	<time datetime="2017-05-19T15:14:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>非对等加密文件，不能用暴力破解来完成，但是在移动平台上，破解它没有任何难度。</p>
-<p><img src="/images/7783310D-A874-4226-A26A-C61C250FE185.png" alt="7783310D-A874-4226-A26A-C61C250FE185"></p>
-<p>这是我在网上找到的代码，然后我发现很多APP都使用的这个代码，直接搜这个方法名称就能看到。他们都喜欢使用苹果提供的CCCrypt加密方法，毕竟是SDK提供的API，简单又方便，主要是方便了别人逆向。</p>
-<h4 id="破解方法"><a href="#破解方法" class="headerlink" title="破解方法"></a>破解方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">br s -n CCCrypt</span><br><span class="line">br com add</span><br><span class="line">bt</span><br><span class="line">DONE</span><br></pre></td></tr></table></figure>
-<p>简直不能再简单，在需要的地方断这个函数即可，打印出调用栈。然后一般会看到调用栈里就有开发人员封装好的解密API。</p>
-<p>其实在搞加密方面的东西，越普遍的东西越不能用。连破解方法都满天飞的东西，还指望它有什么安全性？</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/19/破解非对等加密/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-寻找合适版本的APP进行逆向" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/14/寻找合适版本的APP进行逆向/">寻找合适版本的APP进行逆向</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/14/寻找合适版本的APP进行逆向/" class="archive-article-date">
-  	<time datetime="2017-05-13T21:08:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一般我搞一个APP都会下载几个不同时期的产品，因为时间越靠后，防逆向功能可能越多，逆向难度越大。又要考虑其技术的更新换代，所以也不能太靠前。</p>
-<h4 id="下载APP任意版本的插件"><a href="#下载APP任意版本的插件" class="headerlink" title="下载APP任意版本的插件"></a>下载APP任意版本的插件</h4><p>App Admin是一款能够下载APP任意版本的插件，装好之后，在App Store里点击安装即可弹出选项。有了它，还可以进行多版本的代码比对，你会发现有的版本能直接看到函数参数，而有的并不显示。这比单独逆向一个版本的APP更容易。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IOS 逆向</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/14/寻找合适版本的APP进行逆向/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-呵呵" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1011,10 +463,83 @@
 
 
   
+    <article id="post-camera滤镜demo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/18/camera滤镜demo/">Camera滤镜Demo</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/18/camera滤镜demo/" class="archive-article-date">
+  	<time datetime="2017-04-18T15:56:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>逆向了几个app的滤镜，花了一个晚上把vsco cam的121个滤镜全拿出来了。</p>
+<p>模仿instagram的界面写了个demo，代码在这里: <a href="https://github.com/rexq57/filterdemo" target="_blank" rel="noopener">https://github.com/rexq57/filterdemo</a></p>
+<p><img src="/images/IMG_0205.jpg" alt="IMG_0205"></p>
+<p><img src="/images/IMG_0206.jpg" alt="IMG_0206"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">IOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/18/camera滤镜demo/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
 
 
