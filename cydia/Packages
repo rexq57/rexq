@@ -34,3 +34,19 @@ Author: UnlimApps Inc.
 Depiction: http://beta.unlimapps.com/depiction/com.unlimapps.uaupdatetools/
 Name: App Admin
 
+Package: com.wzbbj.fuckgoloader
+Version: 0.0.1-43+debug
+Architecture: iphoneos-arm
+Maintainer: Viktor Pih
+Installed-Size: 10348
+Depends: mobilesubstrate
+Filename: ./com.wzbbj.fuckgoloader_0.0.1-43+debug_iphoneos-arm.deb
+Size: 2592488
+MD5sum: c02143d64ae99f2bf4cd229d5a096f7e
+SHA1: 419e3443d0a001f9eb5633b083d74067216afe85
+SHA256: d691112b1782ac502b107cf65587fb8e6c530f6680d1e73c3af97e6ce7a367f9
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: Viktor Pih
+Name: fuckgoloader
+
