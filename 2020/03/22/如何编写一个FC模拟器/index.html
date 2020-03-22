@@ -18,13 +18,13 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/fc_mem.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/mario2.png">
-<meta property="og:image" content="http://rexq.me/Users/xingbi/blog/public/images/fc_vram.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/fc_vram.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/Savtool-swatches.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/tsb.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/mario.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/bg.png">
 <meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/bg2.png">
-<meta property="og:updated_time" content="2020-03-22T11:52:49.773Z">
+<meta property="og:updated_time" content="2020-03-22T11:55:26.472Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何编写一个FC模拟器">
 <meta name="twitter:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
@@ -231,7 +231,7 @@
 <p>屏幕上的角色，是由精灵控制的，每个精灵代表一个瓦片（图案表单元），像马里奥这样的角色，是由多个精灵拼接而成的。</p>
 <p><img src="images/mario2.png" alt="mario2"></p>
 <h3 id="VRAM"><a href="#VRAM" class="headerlink" title="VRAM"></a><strong>VRAM</strong></h3><p>VRAM是一个16KB大小，专门提供给PPU使用的内存，可以理解为显卡的显存，存储名称表、属性表、图案表。图案表是固定的，系统启动的时候，会从ROM里的固定位置读取图案表数据加载到VRAM。</p>
-<p><img src="/Users/xingbi/blog/public/images/fc_vram.png" alt="fc_vram"></p>
+<p><img src="images/fc_vram.png" alt="fc_vram"></p>
 <p>详见：<a href="https://wiki.nesdev.com/w/index.php/PPU_memory_map" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_memory_map</a></p>
 <p>注意：属性表位于名称表未使用的最后64字节空间</p>
 <p>模拟这部分内存，同样需要处理镜像问题</p>
@@ -298,7 +298,6 @@
 <h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><p>了解完以上知识，我们就可以让超级马里奥显示出画面来了。绘图部分就是上面讲到的像素格式解析，可自行实现。</p>
 <p><img src="images/bg2.png" alt="bg2"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>篇幅有限，文章就写到这里，剩下的部分，例如6502汇编程序编写、屏幕滚动、碰撞检测、控制器、时钟周期同步、Mapper等，这些内容可以在编写模拟器的时候结合前面的知识查阅相关文档来逐步实现。所有资料都可以在 <a href="http://nesdev.com/" target="_blank" rel="noopener">nesdev.com</a> 上找到。</p>
-<p>相信各位在对FC系统有个大概了解之后，玩每个FC游戏又有了更深层次的体会，曾经的FC游戏开发者非常值得敬佩，感谢他们带给我们那么多欢乐的时光。</p>
 
       
 
