@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://rexq.me">
-  <title>Tag: NES 汇编 | rexq</title>
+  <title>如何编写一个FC模拟器 | rexq</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="rexq">
-<meta property="og:url" content="http://rexq.me/tags/NES-汇编/index.html">
+  <meta name="description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
+<meta name="keywords" content="NES FC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何编写一个FC模拟器">
+<meta property="og:url" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/index.html">
 <meta property="og:site_name" content="rexq">
+<meta property="og:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/fc_mem.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/mario2.png">
+<meta property="og:image" content="http://rexq.me/Users/xingbi/blog/public/images/fc_vram.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/Savtool-swatches.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/tsb.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/mario.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/bg.png">
+<meta property="og:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/bg2.png">
+<meta property="og:updated_time" content="2020-03-22T11:52:49.773Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rexq">
+<meta name="twitter:title" content="如何编写一个FC模拟器">
+<meta name="twitter:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
+<meta name="twitter:image" content="http://rexq.me/2020/03/22/如何编写一个FC模拟器/images/fc_mem.png">
   
     <link rel="alternative" href="/atom.xml" title="rexq" type="application/atom+xml">
   
@@ -150,60 +164,281 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-如何编写一个FC模拟器" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/25/尝试开发NES模拟器/" class="archive-article-date">
-  	<time datetime="2017-06-25T03:28:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-25</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/25/尝试开发NES模拟器/">尝试开发NES模拟器</a>
+    <h1 class="article-title" itemprop="name">
+      如何编写一个FC模拟器
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/03/22/如何编写一个FC模拟器/" class="archive-article-date">
+  	<time datetime="2020-03-22T11:52:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“小霸王其乐无穷啊~”</p>
+<p>FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。</p>
+<p>该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了FC的设计之后，与前辈们的设计思想产生碰撞的火花。</p>
+<h2 id="模拟器如何工作？"><a href="#模拟器如何工作？" class="headerlink" title="模拟器如何工作？"></a><strong>模拟器如何工作？</strong></h2><p>FC主要依靠CPU、PPU、APU的协作。（CPU是中央处理单元、PPU是图像处理单元、APU是音频处理单元）</p>
+<p>模拟器主要流程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">load_rom();</span><br><span class="line">while(!quit)</span><br><span class="line">&#123;</span><br><span class="line"> cpu_work();</span><br><span class="line"> ppu_work();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ROM即游戏文件，是从卡带上面通过专业设备dump下来的，里面包含了一句一句的机器指令，首先需要把ROM加载到内存中。在cpu_work里面，我们要做的就是逐条读取指令、解析指令，并模拟内存操作。然后，ppu_work根据当前内存里的数据，将其转换成一幅图像（也就是我们从显示器上看到的内容）。</p>
+<p>模拟内存操作，包含对内存、寄存器、栈的操作。这些都是以软件来模拟的，透过内存分配、变量分配即可完成硬件的搭建。在整个模拟器运行中，你会发现以上每次循环都会使得我们申请的内存或变量发生改变，在这个过程中，我们需要让内存里的图像显示到屏幕上，这就得根据当前平台相应语言写出UI，将ppu得到的图像显示出来。在这个连贯的画面呈现过程中，将控制器（例如键盘）的操作，写入对应内存中，就实现了角色的控制。</p>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a><strong>内存</strong></h2><p>FC内存大小为64KB，它是一个独立于CPU的存储硬件，它之所以能跟其他硬件紧密相连，是通过主板上的电路进行物理连接的。在模拟的时候成本就很低了，只需要使用指针来指向内存地址。</p>
+<p><img src="images/fc_mem.png" alt="fc_mem"></p>
+<p>详见：<a href="https://wiki.nesdev.com/w/index.php/CPU_memory_map" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/CPU_memory_map</a></p>
+<p>其中连接到CPU，提供数据存储的内存只有2KB，也就是0x0000-0x07FF段，但FC的CPU具有16位寻址功能，可以完整访问64KB的内存空间。PPU有几个寄存器是映射在0x2000-0x2007和0x4014上的，通过这几个暴露在内存上的寄存器，CPU与PPU之间得以进行协作通信。</p>
+<p>在模拟内存的时候，需要处理镜像问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct Memory &#123;</span><br><span class="line"></span><br><span class="line"> Memory()</span><br><span class="line"> &#123;</span><br><span class="line"> // 申请内存</span><br><span class="line"> _data = (uint8_t*)malloc(0x10000);</span><br><span class="line"> memset(_data, 0, 0x10000);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> // 得到实际内存地址inlineuint8_t* _getRealAddr(uint16_t addr)</span><br><span class="line"> &#123;</span><br><span class="line"> // 对访问地址做镜像修正</span><br><span class="line"> if (addr &gt;= 0x2008 &amp;&amp; addr &lt;= 0x3FFF)   // 处理I/O寄存器镜像</span><br><span class="line"> &#123; addr = 0x2000 + (addr % 8); &#125;</span><br><span class="line"> else if (addr &gt;= 0x0800 &amp;&amp; addr &lt;= 0x1FFF) // 2KB internal RAM 镜像</span><br><span class="line"> &#123; addr = addr % 0x0800; &#125;</span><br><span class="line"> </span><br><span class="line">  return _data + addr;</span><br><span class="line"> &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="加载ROM"><a href="#加载ROM" class="headerlink" title="加载ROM"></a><strong>加载ROM</strong></h2><p>写好了内存模块，就可以将ROM里的数据加载到内存。ROM包含一个文件头，需要先对其进行解析。</p>
+<p>文件头长度是16字节，定义如下</p>
+<ul>
+<li>0-3: Constant 45 1A (“NES” followed by MS-DOS end-of-file)</li>
+<li>4: Size of PRG ROM in 16 KB units</li>
+<li>5: Size of CHR ROM in 8 KB units (Value 0 means the board uses CHR RAM)</li>
+<li>6: <a href="https://wiki.nesdev.com/w/index.php/INES#Flags_6" target="_blank" rel="noopener">Flags 6</a> - Mapper, mirroring, battery, trainer</li>
+<li>7: <a href="https://wiki.nesdev.com/w/index.php/INES#Flags_7" target="_blank" rel="noopener">Flags 7</a> - Mapper, VS/Playchoice, <a href="https://wiki.nesdev.com/w/index.php/NES_2.0" target="_blank" rel="noopener">NES 2.0</a></li>
+<li>8: <a href="https://wiki.nesdev.com/w/index.php/INES#Flags_8" target="_blank" rel="noopener">Flags 8</a> - PRG-RAM size (rarely used extension)</li>
+<li>9: <a href="https://wiki.nesdev.com/w/index.php/INES#Flags_9" target="_blank" rel="noopener">Flags 9</a> - TV system (rarely used extension)</li>
+<li>10: <a href="https://wiki.nesdev.com/w/index.php/INES#Flags_10" target="_blank" rel="noopener">Flags 10</a> - TV system, PRG-RAM presence (unofficial, rarely used extension)</li>
+<li>11-15: Unused padding (should be filled with zero, but some rippers put their name across bytes 7-15)</li>
+</ul>
+<p>通过第四字节可以知道16KB PRG ROM的个数。内存0x8000-0xFFFF的32KB连续空间，用来存储PRG ROM，如果只有一个16KB ROM，需要复制一份到0xC000处。</p>
+<p>程序起始地址就是0x8000，也就是第一条指令是从0x8000开始的。</p>
+<h2 id="CPU（2A03）"><a href="#CPU（2A03）" class="headerlink" title="CPU（2A03）"></a><strong>CPU（2A03）</strong></h2><p>FC使用的是一个8位处理器（2A03），使用6502指令集。</p>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a><strong>寄存器</strong></h3><p>将CPU比作一个结构体，寄存器就是其私有成员变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">struct CPU_2A03 &#123;struct __registers &#123;// 3个特殊功能寄存器// PC寄存器(Program Counter)// SP寄存器(Stack Pointer)// P寄存器(Processor Status)</span><br><span class="line"> uint16_t PC; // 存储16bit地址</span><br><span class="line"> uint8_t SP; // 由8bit表示[0,255]的栈空间</span><br><span class="line">  </span><br><span class="line"> enum __P&#123;</span><br><span class="line"> C = 0,</span><br><span class="line"> Z,I,D,B,_,V,N</span><br><span class="line"> // C; // 进位</span><br><span class="line"> // Z; // 零</span><br><span class="line"> // I; // 中断禁止</span><br><span class="line"> // D; // Decimal Mode，无影响，但支持 SED CLD 指令</span><br><span class="line"> // B; // 中断类型，软中断为1，硬中断为0</span><br><span class="line"> // _; // 空</span><br><span class="line"> // V; // 溢出</span><br><span class="line"> // N; // 负数</span><br><span class="line"> &#125;;</span><br><span class="line"> struct bit8 P;</span><br><span class="line"></span><br><span class="line"> // 3个8位寄存器，用于计算数值</span><br><span class="line"> uint8_t A;</span><br><span class="line"> uint8_t X;</span><br><span class="line"> uint8_t Y;</span><br><span class="line"> &#125;regs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于这些寄存器，只需要知道它们参与对应指令的计算即可，主要是读写内存、把数据存取于栈上。</p>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a><strong>栈</strong></h3><p>栈也是一段内存，栈的读写只能依次推入/取出，于是需要栈指针SP来记录当前栈的下标。其长度为256字节，起始位置是内存的0x100，范围在0x100-0x1FF。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">regs.SP = 0xFF; // 栈是自上而下增加</span><br></pre></td></tr></table></figure>
+<p>入栈的时候SP指针上移，出栈的时候下移，初始值为0xFF。</p>
+<h3 id="指令解析"><a href="#指令解析" class="headerlink" title="指令解析"></a><strong>指令解析</strong></h3><p>机器指令是8位的，数据格式是：指令(8bit) + 操作数(8 or 16bit)。</p>
+<p>于是，指令解析可以写成下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cmd = read_8bit();</span><br><span class="line">switch(cmd)</span><br><span class="line">&#123;</span><br><span class="line"> case AND: ...</span><br><span class="line"> case ASL: ...</span><br><span class="line"> case BCC: ...</span><br><span class="line"> case BCS: ...</span><br><span class="line"> ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里先不介绍指令的具体解析，只需要明白这个操作即可，例如寄存器 A|X|Y的数学运算，栈SP指针的前后移动，PC指针的跳转等等。</p>
+<p>这里有指令解析的完整实现：<a href="http://nesdev.com/6502_cn.txt" target="_blank" rel="noopener">http://nesdev.com/6502_cn.txt</a></p>
+<h2 id="PPU（2C02）"><a href="#PPU（2C02）" class="headerlink" title="PPU（2C02）"></a><strong>PPU（2C02）</strong></h2><p>PPU是图像处理单元，负责像素填充，类似显卡。PPU专用内存VRAM存储绘图所需的数据。其中名称表、图案表、属性表，构成整幅背景，通过索引的方式，每个点映射为系统调色板上的一个颜色。PPU的工作就是负责处理其中的转换。</p>
+<p>在当时处理器受限、存储空间受限的情况下，为了让显示器呈现彩色画面，任天堂使用了这种巧妙的设计，在减小内存占用的同时，还支持变色功能。</p>
+<p>至于背景如何滚动起来，是由PPU专门的寄存器来控制名称表的偏移坐标，由CPU执行相应指令的时候，更改该寄存器来实现的。</p>
+<p>屏幕上的角色，是由精灵控制的，每个精灵代表一个瓦片（图案表单元），像马里奥这样的角色，是由多个精灵拼接而成的。</p>
+<p><img src="images/mario2.png" alt="mario2"></p>
+<h3 id="VRAM"><a href="#VRAM" class="headerlink" title="VRAM"></a><strong>VRAM</strong></h3><p>VRAM是一个16KB大小，专门提供给PPU使用的内存，可以理解为显卡的显存，存储名称表、属性表、图案表。图案表是固定的，系统启动的时候，会从ROM里的固定位置读取图案表数据加载到VRAM。</p>
+<p><img src="/Users/xingbi/blog/public/images/fc_vram.png" alt="fc_vram"></p>
+<p>详见：<a href="https://wiki.nesdev.com/w/index.php/PPU_memory_map" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_memory_map</a></p>
+<p>注意：属性表位于名称表未使用的最后64字节空间</p>
+<p>模拟这部分内存，同样需要处理镜像问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"> struct VRAM &#123;</span><br><span class="line">  VRAM()</span><br><span class="line"> &#123;</span><br><span class="line">  // 申请内存 16KB</span><br><span class="line">  _data = (uint8_t*)malloc(0x4000);</span><br><span class="line">  memset(_data, 0, 0x4000);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // 背景调色板地址</span><br><span class="line"> const uint8_t* bkPaletteAddress() const</span><br><span class="line"> &#123;</span><br><span class="line">  return const_cast(this)-&gt;_getRealAddr(0x3F00);</span><br><span class="line">  // return &amp;_data[0x3F00];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> // 精灵调色板地址</span><br><span class="line"> const uint8_t* sprPaletteAddress() const</span><br><span class="line"> &#123;</span><br><span class="line">  return const_cast(this)-&gt;_getRealAddr(0x3F10);</span><br><span class="line">  // return &amp;_data[0x3F10];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> // 名称表地址</span><br><span class="line"> const uint8_t* nameTableAddress(int index) const</span><br><span class="line"> &#123;</span><br><span class="line">  return const_cast(this)-&gt;_getRealAddr(0x2000 + index*0x0400);</span><br><span class="line">  // return &amp;_data[0x2000 + index*0x0400];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> // 属性表地址</span><br><span class="line"> const uint8_t* attributeTableAddress(int index) const</span><br><span class="line"> &#123;</span><br><span class="line">  return const_cast(this)-&gt;_getRealAddr(0x23C0 + index*0x0400);</span><br><span class="line">  // return &amp;_data[0x23C0 + index*0x0400];</span><br><span class="line"> &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="调色板"><a href="#调色板" class="headerlink" title="调色板"></a><strong>调色板</strong></h3><h4 id="系统调色板"><a href="#系统调色板" class="headerlink" title="系统调色板"></a><strong>系统调色板</strong></h4><p><img src="images/Savtool-swatches.png" alt="Savtool-swatches"></p>
+<p>系统调色板构成了FC能够显示的所有颜色（一共64种），透过下标索引来使用，下面是具体RGB值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">84 84 84 0 30 116 8 16 144 48 0 136 68 0 100 92 0 48 84 4 0 60 24 0 32 42 0 8 58 0 0 64 0 0 60 0 0 50 60 0 0 0</span><br><span class="line">152 150 152 8 76 196 48 50 236 92 30 228 136 20 176 160 20 100 152 34 32 120 60 0 84 90 0 40 114 0 8 124 0 0 118 40 0 102 120 0 0 0</span><br><span class="line">236 238 236 76 154 236 120 124 236 176 98 236 228 84 236 236 88 180 236 106 100 212 136 32 160 170 0 116 196 0 76 208 32 56 204 108 56 180 204 60 60 60</span><br><span class="line">236 238 236 168 204 236 188 188 236 212 178 236 236 174 236 236 174 212 236 180 176 228 196 144 204 210 120 180 222 120 168 226 144 152 226 180 160 214 228 160 162 160</span><br></pre></td></tr></table></figure>
+<p>我们需要单独分配一个192字节的空间来存储调色板颜色</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const static uint8_t DEFAULT_PALETTE[192] = &#123;</span><br><span class="line">84,84,84,</span><br><span class="line">0,30,116,</span><br><span class="line">8,16,144,</span><br><span class="line">48,0,136,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id><a href="#" class="headerlink" title=" "></a> </h4><h4 id="背景调色板-amp-精灵调色板"><a href="#背景调色板-amp-精灵调色板" class="headerlink" title="背景调色板 &amp; 精灵调色板"></a><strong>背景调色板 &amp; 精灵调色板</strong></h4><p>调色板内存位于0x3F00-0x3F1F（32字节），由两个16字节的调色板组成，一个用于背景调色（0x3F00），一个用于精灵调色（0x3F10）。其中每个字节表示一个0-63的数，索引到系统调色板，下面看到的颜色都来自系统调色板。</p>
+<p><img src="images/tsb.png" alt="tsb"></p>
+<p>调色板内存有些地方存在镜像，见上图蓝色位置。这个问题留给大家探索了，我也只是猜测。</p>
+<h3 id="图案表"><a href="#图案表" class="headerlink" title="图案表"></a><strong>图案表</strong></h3><p>图案表是一个4KB的空间，PPU有两个图案表0x0000-0x0FFF和0x1000-0x1FFF，映射在VRAM里由背景和精灵共用。它的基本单元是瓦片，一个瓦片8x8像素（64个像素），8字节一组，共2组顺序排列，16字节。下面是一个瓦片的数据排列：</p>
+<p>64bit: 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</p>
+<p>64bit: 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</p>
+<p><img src="images/mario.png" alt="mario"></p>
+<p>为了索引到调色板内存，需要一个4bit的数（0-15）。这里第一组构成了每个像素的低0位，第二组构成了每个像素的低1位。所以瓦片存在图案表的时候，实际上是无色的，因为每个像素只代表了2bit，还无法索引到具体调色板内存上的位置。</p>
+<p>最后需要与属性表构成的高2bit组成一个4bit的数（0-15），才能索引到调色板内存。</p>
+<h3 id="名称表"><a href="#名称表" class="headerlink" title="名称表"></a><strong>名称表</strong></h3><p>FC有4个名称表，位于0x2000-0x2FFF，一共4KB，每个名称表1024字节。其中前960字节存储实际名称表，后64字节存储属性表。</p>
+<p>一个名称表是32x30的尺寸（960字节），每个单元占1字节（0-255），用来定位一个瓦片（图案表单元），也就是上面介绍的图案表中的16字节数据。所以在计算瓦片索引的时候，记得按照16字节来做偏移。</p>
+<p>有了名称表，我们就能构成整幅画面，因为32x30*8x8就等于256x240，刚好是FC显示尺寸。</p>
+<p>现在，我们可以根据名称表用瓦片来填满每个像素，但是此时每个像素只有2bit。</p>
+<h3 id="属性表"><a href="#属性表" class="headerlink" title="属性表"></a><strong>属性表</strong></h3><p>每个属性表位于每个名称表的后64字节，其中前60字节有意义。</p>
+<p>全屏是由32x30的瓦片构成的，为了填补每个瓦片缺失的2bit，属性表每个字节作用在每4x4的瓦片上。每字节（8bit）分成4x2bit，每2bit作用在2x2的瓦片上（4x4 = 4x2x2）。作为其中每个像素的高2bit，以此构成一个4bit数（0-15），索引到调色板内存。</p>
+<p>知道了以上信息，我们就可以把每个名称表都画出来，像下面这样（2x2排列）。</p>
+<p><img src="images/bg.png" alt="bg"></p>
+<p>名称表有个特性叫：镜像。目前实现竖直镜像即可，我暂时还没有弄懂其他镜像怎么控制。</p>
+<p>具体查看这里：<a href="https://wiki.nesdev.com/w/index.php/Mirroring" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Mirroring</a></p>
+<h3 id="精灵"><a href="#精灵" class="headerlink" title="精灵"></a><strong>精灵</strong></h3><p>精灵也是图案表的瓦片引用，每个精灵引用一个瓦片，4字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Sprite &#123; </span><br><span class="line"> uint8_t y;</span><br><span class="line"> uint8_t tileIndex; // 精灵在图案表里的tile索引</span><br><span class="line"> bit8 info;    // 精灵的信息uint8_t x;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>info定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">76543210</span><br><span class="line">||||||||</span><br><span class="line">||||||++- Palette (4 to 7) of sprite</span><br><span class="line">|||+++--- Unimplemented</span><br><span class="line">||+------ Priority (0: in front of background; 1: behind background)</span><br><span class="line">|+------- Flip sprite horizontally</span><br><span class="line">+-------- Flip sprite vertically</span><br></pre></td></tr></table></figure>
+<p>info里低2bit构成了类似属性表的工作，构成调色板内存引用的高2bit，与瓦片自带的低2bit构成一个4bit数索引到调色板内存。</p>
+<p>其中info还定义了翻转功能，以及在背景上还是背景下。还记得马里奥下水管时的样子吗？那个时候就是通过改变Priority值来实现的。</p>
+<p>FC一共支持64个精灵在屏幕上显示，也就是说，需要准备一个256字节的存储空间来模拟精灵内存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uint8_t _OAM[256]; // 精灵内存, 64 个，每个4字节</span><br></pre></td></tr></table></figure>
+<p>OAM的数据是由PPU暴露在FC内存上的几个寄存器传入的，位于0x2000-0x2007。</p>
+<p>这里详细介绍了这几个寄存器：<a href="https://wiki.nesdev.com/w/index.php/PPU_registers" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_registers</a></p>
+<p>实现之后，才能与PPU传输数据。</p>
+<h3 id="画面呈现"><a href="#画面呈现" class="headerlink" title="画面呈现"></a><strong>画面呈现</strong></h3><p>FC的画面呈现，涉及扫描线、绘制像素点、时间周期的准确同步，这里简单介绍PPU的工作流程。</p>
+<p>FC并没有缓冲区一说，PPU会实时在屏幕上绘制每一个点。PPU的时钟周期是CPU时钟周期的3倍，当CPU运行了1个时钟周期（一条指令花费数个CPU时钟周期），PPU就在屏幕上画了3个点，一行画完后跳转到下一行，如此将整个显示器画完，再进行下一帧的绘制。画面呈现通常是60帧/秒，但这跟电视信号的制式有关，那个年代常用的制式有NTSC和PAL。</p>
+<p>我们要用一块内存来模拟显示器，存储PPU绘制的像素点，最后才将其作为纹理显示。</p>
+<p>NTSC制式数据，尺寸341x262像素，刷新率60fps。</p>
+<p>FC可显示区域是256x240像素，我们在模拟的时候需要按照制式来绘制每一条扫描线，不在显示范围的就跳过，但仍然要算在PPU工作时间内（PPU的水平空白时间称为HBlank，竖直空白时间称为VBlank）。</p>
+<h3 id="VBlank"><a href="#VBlank" class="headerlink" title="VBlank"></a><strong>VBlank</strong></h3><p>我们知道了PPU一直在屏幕上绘制像素点，又没有缓冲区，这不就是所谓的“禁用垂直同步”吗？为什么没有产生画面撕裂呢？</p>
+<p>因为所有画面改变的操作都放到了VBlank里，也就是PPU画完最后一根可见扫描线之后，运行在不可见扫描线期间这段时间。</p>
+<p>FC处理器只支持单线程，如何知道VBlank发生了呢？谁来通知并触发相应代码？这里就得提到中断了。</p>
+<p>VBlank发生的时候，会触发NMI中断。</p>
+<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a><strong>中断</strong></h2><p>中断，可以理解为系统事件，在程序执行中，遇到了特殊情况需要处理，系统将程序挂起来（把PC指向的下一条指令地址推入栈），然后将PC跳转到中断处理函数地址继续执行，返回的时候，也就回到之前程序的下一条指令。</p>
+<p>中断类型有四种</p>
+<p>NMI：此中断可以被0x2000的第7位屏蔽，0就是屏蔽</p>
+<p>复位：此中断不可屏蔽</p>
+<p>Break：此中断为代码产生，例如执行到机器码0x00，就需要模拟产生此中断，通常是执行错误才会执行到0x00</p>
+<p>IRQs：此中断也叫软中断，由系统硬件发出，可以屏蔽。如果中断禁止标记为0，才可继续此中断</p>
+<h3 id="为什么中断有可屏蔽一说？"><a href="#为什么中断有可屏蔽一说？" class="headerlink" title="为什么中断有可屏蔽一说？"></a><strong>为什么中断有可屏蔽一说？</strong></h3><p>我们知道中断函数也是程序员写的，如果在这段时间代码量大，执行时间长，PPU可一直在运行，如果绘制到第二帧完成，再次触发了NMI中断，就会陷入中断嵌套，造成程序崩溃。</p>
+<p>所以，在处理中断函数跳转的时候，要先屏蔽中断</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 设置中断屏蔽标志(I)防止新的中断进来</span><br><span class="line">regs.P.set(__registers::I, 1);</span><br></pre></td></tr></table></figure>
+<p>而我们摁下FC机器上的复位键产生的复位中断，是不可屏蔽的。</p>
+<h3 id="如何处理中断？"><a href="#如何处理中断？" class="headerlink" title="如何处理中断？"></a><strong>如何处理中断？</strong></h3><p>中断应该放在cpu_work执行当前指令解析之前，首先检查是否有中断信号存在。</p>
+<p>不同的中断，由不同的中断函数来处理，程序员需要把中断函数地址写在固定地址下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 得到中断处理函数的地址</span><br><span class="line">inline</span><br><span class="line">uint16_t _getInterruptHandlerAddr(InterruptType interruptType) const</span><br><span class="line">&#123;</span><br><span class="line"> const static std::map&lt;int, uint16_t&gt; handler = &#123;</span><br><span class="line"> &#123;InterruptTypeNMI, 0xFFFA&#125;,</span><br><span class="line"> &#123;InterruptTypeReset, 0xFFFC&#125;,</span><br><span class="line"> &#123;InterruptTypeIRQs, 0xFFFE&#125;,</span><br><span class="line"> &#123;InterruptTypeBreak, 0xFFFE&#125;,</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> const uint16_t&amp; addr = handler.at(interruptType);</span><br><span class="line"> uint16_t interruptHandlerAddr = _mem-&gt;get16bitData(addr);</span><br><span class="line"> return interruptHandlerAddr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在汇编中是这样写的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.bank 1 </span><br><span class="line">.org $FFFA </span><br><span class="line">.dw 0 ; VBlank中断向量 </span><br><span class="line">.dw Start ; 复位向量 </span><br><span class="line">.dw VBlank_Routine ; 当BRK指令执行时的中断向量</span><br></pre></td></tr></table></figure>
+<h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><p>了解完以上知识，我们就可以让超级马里奥显示出画面来了。绘图部分就是上面讲到的像素格式解析，可自行实现。</p>
+<p><img src="images/bg2.png" alt="bg2"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>篇幅有限，文章就写到这里，剩下的部分，例如6502汇编程序编写、屏幕滚动、碰撞检测、控制器、时钟周期同步、Mapper等，这些内容可以在编写模拟器的时候结合前面的知识查阅相关文档来逐步实现。所有资料都可以在 <a href="http://nesdev.com/" target="_blank" rel="noopener">nesdev.com</a> 上找到。</p>
+<p>相信各位在对FC系统有个大概了解之后，玩每个FC游戏又有了更深层次的体会，曾经的FC游戏开发者非常值得敬佩，感谢他们带给我们那么多欢乐的时光。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">NES 汇编</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">NES FC</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://rexq.me/2020/03/22/如何编写一个FC模拟器/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/04/28/给微信添加指纹识别/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">给微信添加指纹识别</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -226,9 +461,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
