@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://rexq.me">
-  <title>rexq</title>
+  <title>如何编写一个FC模拟器 | rexq</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="rexq">
-<meta property="og:url" content="http://rexq.me/index.html">
+  <meta name="description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
+<meta name="keywords" content="NES FC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何编写一个FC模拟器">
+<meta property="og:url" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/index.html">
 <meta property="og:site_name" content="rexq">
+<meta property="og:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/fc_mem.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/mario2.png">
+<meta property="og:image" content="http://rexq.me/Users/xingbi/blog/public/images/fc_vram.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/Savtool-swatches.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/tsb.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/mario.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/bg.png">
+<meta property="og:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/bg2.png">
+<meta property="og:updated_time" content="2020-03-22T11:50:29.162Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rexq">
+<meta name="twitter:title" content="如何编写一个FC模拟器">
+<meta name="twitter:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
+<meta name="twitter:image" content="http://rexq.me/2017/08/13/如何编写一个FC模拟器/images/fc_mem.png">
   
     <link rel="alternative" href="/atom.xml" title="rexq" type="application/atom+xml">
   
@@ -150,217 +164,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-给微信添加指纹识别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-如何编写一个FC模拟器" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/28/给微信添加指纹识别/">给微信添加指纹识别</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/28/给微信添加指纹识别/" class="archive-article-date">
-  	<time datetime="2019-04-27T17:32:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>每次把手机借别人玩的时候，总是不放心，于是写了个tweak插件给微信增加指纹识别功能。</p>
-<p>项目代码在这里：<a href="https://github.com/rexq57/rechat" target="_blank" rel="noopener">https://github.com/rexq57/rechat</a></p>
-<p>可以从我的cydia源下载：<a href="http://web.nas.rexq.me/cydia/" target="_blank" rel="noopener">http://web.nas.rexq.me/cydia/</a></p>
-<p>效果图：</p>
-<p><img src="/images/jk5av-3u2w6.gif" alt></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tweak ios</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/28/给微信添加指纹识别/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-NES模拟器开发资料" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/NES模拟器开发资料/">NES模拟器开发资料</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/13/NES模拟器开发资料/" class="archive-article-date">
-  	<time datetime="2017-08-13T11:20:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在搞模拟器开发的过程中，查资料是很重要的，随着阅读更多资料来理解NES的设计，完善自己的模拟器，修复BUG是必经之路。于是我把自己查阅的重要资料做个记录，帮助同样在制作模拟器过程中踩坑的人快速出坑。</p>
-<p>开发流程：</p>
-<p>1、写出框架</p>
-<p>2、编写自己的指令执行模块和指令结构</p>
-<p>3、编写简单的图形绘制模块</p>
-<p>4、实现简单的GUI，反汇编查看、内存查看、调色板查看等</p>
-<p>4、从【指令中文介绍及实现】中摘取指令实现代码，并实现其中的一些必要函数</p>
-<p>5、从【标准指令集】中格式化出自己定义的指令结构</p>
-<p>6、跑出自己写的简单demo，照着【NESASM教程】写一个demo</p>
-<p>7、必须跑通的【NES dev网站】demo：</p>
-<ul>
-<li>Commando</li>
-<li>Fighter F-8000</li>
-<li>NEStress （PPU测试、指令测试等，哪里ERROR就读哪里的源代码）</li>
-</ul>
-<p>8、正常运行【超级马里奥】</p>
-<p>9、修复渲染问题</p>
-<p>10、增加Mapper支持</p>
-<p>11、优化绘图性能</p>
-<p>目前我已经进行到第9步了：</p>
-<p><img src="/images/nes_dev/renes_animation1.gif" alt="demo"></p>
-<h4 id="NESASM教程："><a href="#NESASM教程：" class="headerlink" title="NESASM教程："></a>NESASM教程：</h4><p><a href="http://blog.csdn.net/kkk584520/article/details/40375219" target="_blank" rel="noopener">http://blog.csdn.net/kkk584520/article/details/40375219</a></p>
-<h4 id="NES-dev网站："><a href="#NES-dev网站：" class="headerlink" title="NES dev网站："></a>NES dev网站：</h4><p><a href="http://nesdev.com/archive.html#NESPrograms" target="_blank" rel="noopener">http://nesdev.com/archive.html#NESPrograms</a></p>
-<h4 id="如何制作nes模拟器"><a href="#如何制作nes模拟器" class="headerlink" title="如何制作nes模拟器:"></a>如何制作nes模拟器:</h4><p><a href="http://chaofan.io/archives/%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9Cnes%E6%A8%A1%E6%8B%9F%E5%99%A8" target="_blank" rel="noopener">http://chaofan.io/archives/%E5%A6%82%E4%BD%95%E5%88%B6%E4%BD%9Cnes%E6%A8%A1%E6%8B%9F%E5%99%A8</a></p>
-<h4 id="标准指令集："><a href="#标准指令集：" class="headerlink" title="标准指令集："></a>标准指令集：</h4><p><a href="http://e-tradition.net/bytes/6502/6502_instruction_set.html" target="_blank" rel="noopener">http://e-tradition.net/bytes/6502/6502_instruction_set.html</a></p>
-<h4 id="指令介绍："><a href="#指令介绍：" class="headerlink" title="指令介绍："></a>指令介绍：</h4><p><a href="http://blog.sina.com.cn/s/blog_450c7f590100tn9u.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_450c7f590100tn9u.html</a></p>
-<h4 id="指令中文介绍及实现："><a href="#指令中文介绍及实现：" class="headerlink" title="指令中文介绍及实现："></a>指令中文介绍及实现：</h4><p><a href="http://nesdev.com/6502_cn.txt" target="_blank" rel="noopener">http://nesdev.com/6502_cn.txt</a></p>
-<p>修正及注意事项：</p>
-<p>1、IF_DECIMAL模式的代码全部去掉（感觉实现有误，跑错，去掉不影响功能）</p>
-<p>2、PLA没有操作A寄存器，需要增加一句：AC = src;</p>
-<h4 id="PPU相关"><a href="#PPU相关" class="headerlink" title="PPU相关:"></a>PPU相关:</h4><p>2C02：<a href="http://www.fceux.com/web/help/fceux.html?PPU.html" target="_blank" rel="noopener">http://www.fceux.com/web/help/fceux.html?PPU.html</a></p>
-<p>PPU寄存器：<a href="https://wiki.nesdev.com/w/index.php/PPU_registers" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_registers</a></p>
-<p>调色板：<a href="https://wiki.nesdev.com/w/index.php/PPU_palettes#Backdrop_color_.28palette_index_0.29_uses" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_palettes#Backdrop_color_.28palette_index_0.29_uses</a></p>
-<p>调色板镜像：<a href="http://rebeldancer.blog.163.com/blog/static/2221911142013102392059724/" target="_blank" rel="noopener">http://rebeldancer.blog.163.com/blog/static/2221911142013102392059724/</a></p>
-<p>镜像：<a href="https://wiki.nesdev.com/w/index.php/Mirroring" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Mirroring</a></p>
-<p>谈镜像：<a href="http://wiki.nesdev.com/w/index.php/Talk:Mirroring" target="_blank" rel="noopener">http://wiki.nesdev.com/w/index.php/Talk:Mirroring</a></p>
-<p>滚动：<a href="https://wiki.nesdev.com/w/index.php/PPU_scrolling" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/PPU_scrolling</a></p>
-<p>硬件：<a href="https://wiki.nesdev.com/w/index.php/Visual_2C02" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Visual_2C02</a></p>
-<p>NES图形如何工作：<a href="https://opcode-defined.quora.com/How-NES-Graphics-Work-Nametables" target="_blank" rel="noopener">https://opcode-defined.quora.com/How-NES-Graphics-Work-Nametables</a></p>
-<p>碰撞检测原理：<a href="https://retrocomputing.stackexchange.com/questions/1898/how-can-i-create-a-split-scroll-effect-in-an-nes-game" target="_blank" rel="noopener">https://retrocomputing.stackexchange.com/questions/1898/how-can-i-create-a-split-scroll-effect-in-an-nes-game</a></p>
-<h4 id="CPU相关："><a href="#CPU相关：" class="headerlink" title="CPU相关："></a>CPU相关：</h4><p>中断：<a href="https://wiki.nesdev.com/w/index.php/CPU_interrupts" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/CPU_interrupts</a></p>
-<p>内存映射：<a href="https://wiki.nesdev.com/w/index.php/CPU_memory_map" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/CPU_memory_map</a></p>
-<p>栈：<a href="https://wiki.nesdev.com/w/index.php/Stack" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Stack</a> （栈指针必须支持 [0,255] 的上下溢出）</p>
-<p>状态标记：<a href="https://wiki.nesdev.com/w/index.php/Status_flags" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Status_flags</a></p>
-<p>B标记：<a href="https://wiki.nesdev.com/w/index.php/CPU_status_flag_behavior" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/CPU_status_flag_behavior</a> （未正常实现会造成SP指针的出入栈错误，造成中断返回错误）</p>
-<p>IRQ：<a href="https://wiki.nesdev.com/w/index.php/IRQ" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/IRQ</a></p>
-<h4 id="INES"><a href="#INES" class="headerlink" title="INES"></a>INES</h4><p><a href="https://wiki.nesdev.com/w/index.php/INES" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/INES</a></p>
-<h4 id="How-It-Works"><a href="#How-It-Works" class="headerlink" title="How It Works"></a>How It Works</h4><p><a href="https://n3s.io/index.php?title=How_It_Works" target="_blank" rel="noopener">https://n3s.io/index.php?title=How_It_Works</a></p>
-<h4 id="NES模拟器笔记"><a href="#NES模拟器笔记" class="headerlink" title="NES模拟器笔记"></a>NES模拟器笔记</h4><p><a href="https://ewind.us/2015/nes-emu-2-system-architure/" target="_blank" rel="noopener">https://ewind.us/2015/nes-emu-2-system-architure/</a></p>
-<h4 id="基于FPGA的NES游戏机系统"><a href="#基于FPGA的NES游戏机系统" class="headerlink" title="基于FPGA的NES游戏机系统"></a>基于FPGA的NES游戏机系统</h4><p><a href="https://www.amobbs.com/thread-4011489-1-1.html" target="_blank" rel="noopener">https://www.amobbs.com/thread-4011489-1-1.html</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">NES</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/13/NES模拟器开发资料/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-如何编写一个FC模拟器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/如何编写一个FC模拟器/">如何编写一个FC模拟器</a>
+    <h1 class="article-title" itemprop="name">
+      如何编写一个FC模拟器
     </h1>
   
 
@@ -492,6 +303,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -510,16 +342,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/13/如何编写一个FC模拟器/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://rexq.me/2017/08/13/如何编写一个FC模拟器/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/08/13/NES模拟器开发资料/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          NES模拟器开发资料
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/25/尝试开发NES模拟器/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">尝试开发NES模拟器</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -539,273 +439,14 @@
 
 
 
-
   
-    <article id="post-尝试开发NES模拟器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/25/尝试开发NES模拟器/">尝试开发NES模拟器</a>
-    </h1>
   
 
-        
-        <a href="/2017/06/25/尝试开发NES模拟器/" class="archive-article-date">
-  	<time datetime="2017-06-25T03:28:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>找了些NES资料，便开始着手NES模拟器的开发。</p>
-<p>首先，看到6502处理器的描述之后，创建一个cpu.hpp文件，写出6502 cpu的寄存器结构体：</p>
-<p><img src="/images/nes_dev/1.jpg" alt="3080E5B1-6A54-40A0-AA3C-A4722062F450"></p>
-<p>这样就确定了6502处理器的内部结构。接下来就是要模拟数值计算，一些寻址模式，无非就是直接寻址、间接寻址、或者再加上寄存器的值。</p>
-<p>每条指令基本是这样，指令码是8bit，后面紧跟的操作数是8bit或16bit。我们要做的就是读取第一个字节，放到switch分支里，执行对应的代码，取后面的操作数进行计算。我暂时写了几条指令解析：</p>
-<p><img src="/images/nes_dev/2.jpg" alt="2"></p>
-<p>基本上整个核心模块就是这里，把每条指令的解析代码写出来，操作对应的内存就完成了模拟，图像的话，需要写个PPU，同样是通过指令传递一些数值给PPU，例如告诉它图片来源，精灵数据，地图数据，PPU就可以准备数据，进行绘图，再模拟硬件发出的一个60hz的中断信号，进行画面呈现即可。</p>
-<p>现在，需要写一个内存文件来模拟nes的64kB内存读写，以及rom的加载。像这样：</p>
-<p><img src="/images/nes_dev/3.jpg" alt="3"></p>
-<p>紧接着，我们把rom加载进去，头文件是16字节，后面就是rom数据了。如果只有一个16kB的bank（rom存储单位），需要把16kB的数据复制一份到0xC000，这样0x8000~0xC000~0xFFFF就被一个32kB的数据填满了，这样的话，位于0xFFFA~0xFFFF的3个中断向量读取位置里，才会有数据。我是这样写的：</p>
-<p><img src="/images/nes_dev/4.jpg" alt="4"></p>
-<p>一个cpu对象，一个mem对象，让前者操作后者，就是我们的目的，所以看看init函数：</p>
-<p><img src="/images/nes_dev/5.jpg" alt="5"></p>
-<p>这里进行了寄存器PC（指令指针）和寄存器SP（栈指针）的初始化，以及程序一开始必须执行的Reset中断。需要提的是，cpu是模拟的状态，所以里面的变量类型不是实际的指针，而是基于64kB内存的偏移数值，因为真正的内存地址需要malloc来申请。然后，看看系统中断函数干了什么：</p>
-<p><img src="/images/nes_dev/6.jpg" alt="6"></p>
-<p>无非就是从内存最后6个字节，每2字节存储的一个16bit地址中，拿出对应的中断类型存储的处理函数地址，设置PC指针到这个位置，然后继续执行代码。我写了个asm汇编，里面就标记了中断函数的地址，以及中断函数写了些什么：</p>
-<p><img src="/images/nes_dev/7.jpg" alt="7"></p>
-<p>看不懂的话，需要阅读相关文章，然后自己写个nes程序跑一下，对比着进行模拟器的编写才知道对不对。</p>
-<p>下面是ppu绘图代码：</p>
-<p><img src="/images/nes_dev/9.jpg" alt="8"></p>
-<p>编写模拟器需要debug吧？所以得弄个界面，于是我用cocoa写了个UI，用来查看内存和cpu寄存器，比较简陋。</p>
-<p>最好自己能写个简单demo来进行测试，然后在<a href="http://nesdev.com/archive.html" target="_blank" rel="noopener">nes开发网</a>找些demo来测试。主要是寻址模式写好，指令从<a href="http://e-tradition.net/bytes/6502/6502_instruction_set.html" target="_blank" rel="noopener">官方文档</a>dump下来（我用的python脚本把这上面的文档格式化成我项目里的指令数据），这样确保指令无误。并且使用了<a href="http://nesdev.com/6502_cn.txt" target="_blank" rel="noopener">这里</a>的具体指令代码（只需要实现几个函数即可，因为自己第一次就搞指令难免理解有误，写错都很难查）。</p>
-<p>需要注意的是，原理看<a href="http://zke1ev3n.me/2016/03/12/%E4%BB%8E%E5%A4%B4%E7%BC%96%E5%86%99NES%E6%A8%A1%E6%8B%9F%E5%99%A8/" target="_blank" rel="noopener">这个博客</a>的讲解（属性表他描述有误，看<a href="https://wiki.nesdev.com/w/index.php/PPU_attribute_tables" target="_blank" rel="noopener">这里</a>的英文介绍），其他需要配合文档进行。</p>
-<p>项目代码在这里，<a href="https://github.com/rexq57/RENES" target="_blank" rel="noopener">https://github.com/rexq57/RENES</a> （未开发完）</p>
-<p><img src="/images/nes_dev/renes_animation0.gif" alt="demo"></p>
-<p>参考资料：</p>
-<p>NESASM教程</p>
-<p><a href="http://blog.csdn.net/kkk584520/article/details/40375219" target="_blank" rel="noopener">http://blog.csdn.net/kkk584520/article/details/40375219</a></p>
-<p>nes文件格式</p>
-<p><a href="http://darhx.blog.51cto.com/7920146/1334093" target="_blank" rel="noopener">http://darhx.blog.51cto.com/7920146/1334093</a></p>
-<p>从头编写NES模拟器</p>
-<p><a href="http://zke1ev3n.me/2016/03/12/%E4%BB%8E%E5%A4%B4%E7%BC%96%E5%86%99NES%E6%A8%A1%E6%8B%9F%E5%99%A8/" target="_blank" rel="noopener">http://zke1ev3n.me/2016/03/12/%E4%BB%8E%E5%A4%B4%E7%BC%96%E5%86%99NES%E6%A8%A1%E6%8B%9F%E5%99%A8/</a></p>
-<p>6502指令操作码排序</p>
-<p><a href="http://blog.sina.com.cn/s/blog_450c7f590100tn9u.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_450c7f590100tn9u.html</a></p>
-<p>标准6502指令文档</p>
-<p><a href="http://e-tradition.net/bytes/6502/6502_instruction_set.html" target="_blank" rel="noopener">http://e-tradition.net/bytes/6502/6502_instruction_set.html</a></p>
-<p>nes开发网站</p>
-<p><a href="http://nesdev.com/archive.html" target="_blank" rel="noopener">http://nesdev.com/archive.html</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">NES 汇编</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/25/尝试开发NES模拟器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-呵呵" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/12/呵呵/">呵呵</a>
-    </h1>
   
 
-        
-        <a href="/2017/05/12/呵呵/" class="archive-article-date">
-  	<time datetime="2017-05-12T15:47:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>不出我所料，今天在iosre上面发了个帖，那个版主喜欢装逼，又回答不上来，恼羞成怒把我ban了。</p>
-<p>他还是个在读研究生，工作都没有，啃老，自以为了不起。经常看他以提问不规范嘲讽别人，结果他还厚颜无耻发帖乞讨门票钱，呵呵。装得牛上了天，结果1000多块钱都拿不出来，真是个弱鸡。这种人也是存在感匮乏，只能靠芝麻特权找优越感。</p>
-<p>正如我嘲笑他，只是多看了几页书而已，其实啥都不会，只会装逼。没任何实战经验，天天守着论坛靠怼别人装大神打发时间。同时还发现，那几个版主都差不多，弄个论坛只为装逼，弄个QQ群也随意踢人，这些弱鸡混不了多久，论坛一关就销声匿迹。</p>
-<p>我一开始说的果然没错，iosre这个论坛对新人不友好，其实对任何人都不友好，有问题还是去看雪论坛吧。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">闲谈</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/12/呵呵/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-camera滤镜demo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/18/camera滤镜demo/">Camera滤镜Demo</a>
-    </h1>
   
 
-        
-        <a href="/2017/04/18/camera滤镜demo/" class="archive-article-date">
-  	<time datetime="2017-04-18T15:56:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>逆向了几个app的滤镜，花了一个晚上把vsco cam的121个滤镜全拿出来了。</p>
-<p>模仿instagram的界面写了个demo，代码在这里: <a href="https://github.com/rexq57/filterdemo" target="_blank" rel="noopener">https://github.com/rexq57/filterdemo</a></p>
-<p><img src="/images/IMG_0205.jpg" alt="IMG_0205"></p>
-<p><img src="/images/IMG_0206.jpg" alt="IMG_0206"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">IOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/18/camera滤镜demo/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -828,8 +469,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
