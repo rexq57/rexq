@@ -246,7 +246,7 @@
 <p>全屏是由32x30的瓦片构成的，为了填补每个瓦片缺失的2bit，属性表每个字节作用在每4x4的瓦片上。每字节（8bit）分成4x2bit，每2bit作用在2x2的瓦片上（4x4 = 4x2x2）。作为其中每个像素的高2bit，以此构成一个4bit数（0-15），索引到调色板内存。</p>
 <p>知道了以上信息，我们就可以把每个名称表都画出来，像下面这样（2x2排列）。</p>
 <p><img src="images/bg.png" alt="bg"></p>
-<p>名称表有个特性叫：镜像。目前实现竖直镜像即可，我暂时还没有弄懂其他镜像怎么控制。</p>
+<p>名称表有个特性叫：镜像。目前实现竖直镜像即可（水平、竖直镜像开关由头文件里的一个标记控制）。</p>
 <p>具体查看这里：<a href="https://wiki.nesdev.com/w/index.php/Mirroring" target="_blank" rel="noopener">https://wiki.nesdev.com/w/index.php/Mirroring</a></p>
 <h3 id="精灵"><a href="#精灵" class="headerlink" title="精灵"></a><strong>精灵</strong></h3><p>精灵也是图案表的瓦片引用，每个精灵引用一个瓦片，4字节。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Sprite &#123; </span><br><span class="line">  uint8_t y;</span><br><span class="line">  uint8_t tileIndex; // 精灵在图案表里的tile索引</span><br><span class="line">  bit8 info;    // 精灵的信息uint8_t x;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
