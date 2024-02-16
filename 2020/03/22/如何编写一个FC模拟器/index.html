@@ -15,20 +15,20 @@
 <meta property="og:site_name" content="rexq">
 <meta property="og:description" content="“小霸王其乐无穷啊~” FC对每个80、90后来说，都代表了一段难忘的时光。自从接触编程以后，应该很多人都有想编写一个FC模拟器的冲动，想要了解到底是什么魔法让屏幕上的马里奥穿梭于各个管道之间，变大变小，拯救公主的。但又不知从何做起，始终无法跨出第一步。 该文尽量用文字和简单代码来描述FC模拟器的编写，其中忽略一些细节问题，主要侧重于原理解释，大概的理清FC模拟器的工作流程。希望能跟我一样在理解了">
 <meta property="og:locale">
-<meta property="og:image" content="http://rexq.me/images/fc_mem.png">
-<meta property="og:image" content="http://rexq.me/images/mario2.png">
-<meta property="og:image" content="http://rexq.me/images/fc_vram.png">
-<meta property="og:image" content="http://rexq.me/images/Savtool-swatches.png">
-<meta property="og:image" content="http://rexq.me/images/tsb.png">
-<meta property="og:image" content="http://rexq.me/images/mario.png">
-<meta property="og:image" content="http://rexq.me/images/bg.png">
-<meta property="og:image" content="http://rexq.me/images/bg2.png">
+<meta property="og:image" content="http://rexq.me/images/fc/fc_mem.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/mario2.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/fc_vram.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/Savtool-swatches.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/tsb.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/mario.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/bg.jpg">
+<meta property="og:image" content="http://rexq.me/images/fc/bg2.jpg">
 <meta property="article:published_time" content="2020-03-22T11:52:15.000Z">
-<meta property="article:modified_time" content="2024-02-16T03:45:02.508Z">
+<meta property="article:modified_time" content="2024-02-16T14:39:35.931Z">
 <meta property="article:author" content="rexq57">
 <meta property="article:tag" content="NES FC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://rexq.me/images/fc_mem.png">
+<meta name="twitter:image" content="http://rexq.me/images/fc/fc_mem.jpg">
   
     <link rel="alternative" href="/atom.xml" title="rexq" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <p>ROM即游戏文件，是从卡带上面通过专业设备dump下来的，里面包含了一句一句的机器指令，首先需要把ROM加载到内存中。在cpu_work里面，我们要做的就是逐条读取指令、解析指令，并模拟内存操作。然后，ppu_work根据当前内存里的数据，将其转换成一幅图像（也就是我们从显示器上看到的内容）。</p>
 <p>模拟内存操作，包含对内存、寄存器、栈的操作。这些都是以软件来模拟的，透过内存分配、变量分配即可完成硬件的搭建。在整个模拟器运行中，你会发现以上每次循环都会使得我们申请的内存或变量发生改变，在这个过程中，我们需要让内存里的图像显示到屏幕上，这就得根据当前平台相应语言写出UI，将ppu得到的图像显示出来。在这个连贯的画面呈现过程中，将控制器（例如键盘）的操作，写入对应内存中，就实现了角色的控制。</p>
 <h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a><strong>内存</strong></h2><p>FC内存大小为64KB，它是一个独立于CPU的存储硬件，它之所以能跟其他硬件紧密相连，是通过主板上的电路进行物理连接的。在模拟的时候成本就很低了，只需要使用指针来指向内存地址。</p>
-<p><img src="/../../../../images/fc_mem.png" alt="fc_mem"></p>
+<p><img src="/../../../../images/fc/fc_mem.jpg" alt="fc_mem"></p>
 <p>详见：<a target="_blank" rel="noopener" href="https://wiki.nesdev.com/w/index.php/CPU_memory_map">https://wiki.nesdev.com/w/index.php/CPU_memory_map</a></p>
 <p>其中连接到CPU，提供数据存储的内存只有2KB，也就是0x0000-0x07FF段，但FC的CPU具有16位寻址功能，可以完整访问64KB的内存空间。PPU有几个寄存器是映射在0x2000-0x2007和0x4014上的，通过这几个暴露在内存上的寄存器，CPU与PPU之间得以进行协作通信。</p>
 <p>在模拟内存的时候，需要处理镜像问题</p>
@@ -216,15 +216,15 @@
 <p>在当时处理器受限、存储空间受限的情况下，为了让显示器呈现彩色画面，任天堂使用了这种巧妙的设计，在减小内存占用的同时，还支持变色功能。</p>
 <p>至于背景如何滚动起来，是由PPU专门的寄存器来控制名称表的偏移坐标，由CPU执行相应指令的时候，更改该寄存器来实现的。</p>
 <p>屏幕上的角色，是由精灵控制的，每个精灵代表一个瓦片（图案表单元），像马里奥这样的角色，是由多个精灵拼接而成的。</p>
-<p><img src="/../../../../images/mario2.png" alt="mario2"></p>
+<p><img src="/../../../../images/fc/mario2.jpg" alt="mario2"></p>
 <h3 id="VRAM"><a href="#VRAM" class="headerlink" title="VRAM"></a><strong>VRAM</strong></h3><p>VRAM是一个16KB大小，专门提供给PPU使用的内存，可以理解为显卡的显存，存储名称表、属性表、图案表。图案表是固定的，系统启动的时候，会从ROM里的固定位置读取图案表数据加载到VRAM。</p>
-<p><img src="/../../../../images/fc_vram.png" alt="fc_vram"></p>
+<p><img src="/../../../../images/fc/fc_vram.jpg" alt="fc_vram"></p>
 <p>详见：<a target="_blank" rel="noopener" href="https://wiki.nesdev.com/w/index.php/PPU_memory_map">https://wiki.nesdev.com/w/index.php/PPU_memory_map</a></p>
 <p>注意：属性表位于名称表未使用的最后64字节空间</p>
 <p>模拟这部分内存，同样需要处理镜像问题</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"> struct VRAM &#123;</span><br><span class="line">   VRAM()</span><br><span class="line">   &#123;</span><br><span class="line">     // 申请内存 16KB</span><br><span class="line">     _data = (uint8_t*)malloc(0x4000);</span><br><span class="line">     memset(_data, 0, 0x4000);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  // 背景调色板地址</span><br><span class="line">  const uint8_t* bkPaletteAddress() const</span><br><span class="line">  &#123;</span><br><span class="line">    return const_cast(this)-&gt;_getRealAddr(0x3F00);</span><br><span class="line">    // return &amp;_data[0x3F00];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 精灵调色板地址</span><br><span class="line">  const uint8_t* sprPaletteAddress() const</span><br><span class="line">  &#123;</span><br><span class="line">    return const_cast(this)-&gt;_getRealAddr(0x3F10);</span><br><span class="line">    // return &amp;_data[0x3F10];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 名称表地址</span><br><span class="line">  const uint8_t* nameTableAddress(int index) const</span><br><span class="line">  &#123;</span><br><span class="line">    return const_cast(this)-&gt;_getRealAddr(0x2000 + index*0x0400);</span><br><span class="line">    // return &amp;_data[0x2000 + index*0x0400];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 属性表地址</span><br><span class="line">  const uint8_t* attributeTableAddress(int index) const</span><br><span class="line">  &#123;</span><br><span class="line">    return const_cast(this)-&gt;_getRealAddr(0x23C0 + index*0x0400);</span><br><span class="line">    // return &amp;_data[0x23C0 + index*0x0400];</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<h3 id="调色板"><a href="#调色板" class="headerlink" title="调色板"></a><strong>调色板</strong></h3><h4 id="系统调色板"><a href="#系统调色板" class="headerlink" title="系统调色板"></a><strong>系统调色板</strong></h4><p><img src="/../../../../images/Savtool-swatches.png" alt="Savtool-swatches"></p>
+<h3 id="调色板"><a href="#调色板" class="headerlink" title="调色板"></a><strong>调色板</strong></h3><h4 id="系统调色板"><a href="#系统调色板" class="headerlink" title="系统调色板"></a><strong>系统调色板</strong></h4><p><img src="/../../../../images/fc/Savtool-swatches.jpg" alt="Savtool-swatches"></p>
 <p>系统调色板构成了FC能够显示的所有颜色（一共64种），透过下标索引来使用，下面是具体RGB值</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">84 84 84 0 30 116 8 16 144 48 0 136 68 0 100 92 0 48 84 4 0 60 24 0 32 42 0 8 58 0 0 64 0 0 60 0 0 50 60 0 0 0</span><br><span class="line">152 150 152 8 76 196 48 50 236 92 30 228 136 20 176 160 20 100 152 34 32 120 60 0 84 90 0 40 114 0 8 124 0 0 118 40 0 102 120 0 0 0</span><br><span class="line">236 238 236 76 154 236 120 124 236 176 98 236 228 84 236 236 88 180 236 106 100 212 136 32 160 170 0 116 196 0 76 208 32 56 204 108 56 180 204 60 60 60</span><br><span class="line">236 238 236 168 204 236 188 188 236 212 178 236 236 174 236 236 174 212 236 180 176 228 196 144 204 210 120 180 222 120 168 226 144 152 226 180 160 214 228 160 162 160</span><br></pre></td></tr></table></figure>
 
@@ -232,12 +232,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const static uint8_t DEFAULT_PALETTE[192] = &#123;</span><br><span class="line">84,84,84,</span><br><span class="line">0,30,116,</span><br><span class="line">8,16,144,</span><br><span class="line">48,0,136,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <h4 id=""><a href="#" class="headerlink" title=""></a></h4><h4 id="背景调色板-精灵调色板"><a href="#背景调色板-精灵调色板" class="headerlink" title="背景调色板 &amp; 精灵调色板"></a><strong>背景调色板 &amp; 精灵调色板</strong></h4><p>调色板内存位于0x3F00-0x3F1F（32字节），由两个16字节的调色板组成，一个用于背景调色（0x3F00），一个用于精灵调色（0x3F10）。其中每个字节表示一个0-63的数，索引到系统调色板，下面看到的颜色都来自系统调色板。</p>
-<p><img src="/../../../../images/tsb.png" alt="tsb"></p>
+<p><img src="/../../../../images/fc/tsb.jpg" alt="tsb"></p>
 <p>调色板内存有些地方存在镜像，见上图蓝色位置。这个问题留给大家探索了，我也只是猜测。</p>
 <h3 id="图案表"><a href="#图案表" class="headerlink" title="图案表"></a><strong>图案表</strong></h3><p>图案表是一个4KB的空间，PPU有两个图案表0x0000-0x0FFF和0x1000-0x1FFF，映射在VRAM里由背景和精灵共用。它的基本单元是瓦片，一个瓦片8x8像素（64个像素），8字节一组，共2组顺序排列，16字节。下面是一个瓦片的数据排列：</p>
 <p>64bit: 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</p>
 <p>64bit: 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</p>
-<p><img src="/../../../../images/mario.png" alt="mario"></p>
+<p><img src="/../../../../images/fc/mario.jpg" alt="mario"></p>
 <p>为了索引到调色板内存，需要一个4bit的数（0-15）。这里第一组构成了每个像素的低0位，第二组构成了每个像素的低1位。所以瓦片存在图案表的时候，实际上是无色的，因为每个像素只代表了2bit，还无法索引到具体调色板内存上的位置。</p>
 <p>最后需要与属性表构成的高2bit组成一个4bit的数（0-15），才能索引到调色板内存。</p>
 <h3 id="名称表"><a href="#名称表" class="headerlink" title="名称表"></a><strong>名称表</strong></h3><p>FC有4个名称表，位于0x2000-0x2FFF，一共4KB，每个名称表1024字节。其中前960字节存储实际名称表，后64字节存储属性表。</p>
@@ -247,7 +247,7 @@
 <h3 id="属性表"><a href="#属性表" class="headerlink" title="属性表"></a><strong>属性表</strong></h3><p>每个属性表位于每个名称表的后64字节，其中前60字节有意义。</p>
 <p>全屏是由32x30的瓦片构成的，为了填补每个瓦片缺失的2bit，属性表每个字节作用在每4x4的瓦片上。每字节（8bit）分成4x2bit，每2bit作用在2x2的瓦片上（4x4 &#x3D; 4x2x2）。作为其中每个像素的高2bit，以此构成一个4bit数（0-15），索引到调色板内存。</p>
 <p>知道了以上信息，我们就可以把每个名称表都画出来，像下面这样（2x2排列）。</p>
-<p><img src="/../../../../images/bg.png" alt="bg"></p>
+<p><img src="/../../../../images/fc/bg.jpg" alt="bg"></p>
 <p>名称表有个特性叫：镜像。目前实现竖直镜像即可（水平、竖直镜像开关由头文件里的一个标记控制）。</p>
 <p>具体查看这里：<a target="_blank" rel="noopener" href="https://wiki.nesdev.com/w/index.php/Mirroring">https://wiki.nesdev.com/w/index.php/Mirroring</a></p>
 <h3 id="精灵"><a href="#精灵" class="headerlink" title="精灵"></a><strong>精灵</strong></h3><p>精灵也是图案表的瓦片引用，每个精灵引用一个瓦片，4字节。</p>
@@ -292,7 +292,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.bank 1 </span><br><span class="line">.org $FFFA </span><br><span class="line">.dw 0 ; VBlank中断向量 </span><br><span class="line">.dw Start ; 复位向量 </span><br><span class="line">.dw VBlank_Routine ; 当BRK指令执行时的中断向量</span><br></pre></td></tr></table></figure>
 
 <h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><p>了解完以上知识，我们就可以让超级马里奥显示出画面来了。绘图部分就是上面讲到的像素格式解析，可自行实现。</p>
-<p><img src="/../../../../images/bg2.png" alt="bg2"></p>
+<p><img src="/../../../../images/fc/bg2.jpg" alt="bg2"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>篇幅有限，文章就写到这里，剩下的部分，例如6502汇编程序编写、屏幕滚动、碰撞检测、控制器、时钟周期同步、Mapper等，这些内容可以在编写模拟器的时候结合前面的知识查阅相关文档来逐步实现。所有资料都可以在 <a target="_blank" rel="noopener" href="http://nesdev.com/">nesdev.com</a> 上找到。</p>
 
       
@@ -378,8 +378,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2019/04/28/%E7%BB%99%E5%BE%AE%E4%BF%A1%E6%B7%BB%E5%8A%A0%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">给微信添加指纹识别</div>
+    <a href="/2017/08/13/NES%E6%A8%A1%E6%8B%9F%E5%99%A8%E5%BC%80%E5%8F%91%E8%B5%84%E6%96%99/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NES模拟器开发资料</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -513,11 +513,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IOS</a>
+                <a href="javascript:void(0)" class="js-tag color3">闲谈</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">闲谈</a>
+                <a href="javascript:void(0)" class="js-tag color4">IOS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -526,10 +526,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">NES 汇编</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tweak ios</a>
               </li>
             
             <div class="clearfix"></div>
